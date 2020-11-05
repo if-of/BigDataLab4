@@ -9,5 +9,4 @@ public class BigDataLab4Application {
     public static void main(String[] args) {
         SpringApplication.run(BigDataLab4Application.class, args);
     }
-
 }

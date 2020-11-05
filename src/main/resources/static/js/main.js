@@ -1,7 +1,6 @@
 $(document).ready(() => {
 
-    $('#process').on('click', _makeAjaxCall)
-
+    const container = $("#mynetwork")[0];
     const options = {
         edges: {
             arrows: {
@@ -12,33 +11,29 @@ $(document).ready(() => {
         }
     }
 
+    $('#process').on('click', _makeAjaxCall)
+
     function _makeAjaxCall() {
-        // create an array with nodes
-        let nodes = new vis.DataSet([
-            {id: 1, label: "Node 1", title: "igor"},
-            {id: 2, label: "Node 2"},
-            {id: 3, label: "Node 3"},
-            {id: 4, label: "Node 4"},
-            {id: 5, label: "Node 5"},
-        ]);
+        $.ajax({
+            url: "/process",
+            method: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({
+                url: $("#url")[0].value,
+                maxPages: $("#max_pages")[0].value,
+            }),
+        })
+            .done(_drawGraph)
+            .fail(message => alert(JSON.stringify(message, null, 2)));
+    }
 
-        // create an array with edges
-        let edges = new vis.DataSet([
-            {from: 1, to: 3},
-            {from: 1, to: 2},
-            {from: 2, to: 1},
-            {from: 2, to: 4},
-            {from: 2, to: 5},
-            {from: 3, to: 3},
-        ]);
-
-        // create a network
-        const container = $("#mynetwork")[0];
+    function _drawGraph(graphJson) {
+        const rawData = JSON.parse(graphJson)
         const data = {
-            nodes: nodes,
-            edges: edges,
-        };
-
+            nodes: new vis.DataSet(rawData.nodes),
+            edges: new vis.DataSet(rawData.edges)
+        }
         const network = new vis.Network(container, data, options);
     }
 })
