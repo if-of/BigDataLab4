@@ -28,8 +28,7 @@ $(document).ready(() => {
             .fail(message => alert(JSON.stringify(message, null, 2)));
     }
 
-    function _drawGraph(graphJson) {
-        const rawData = JSON.parse(graphJson)
+    function _drawGraph(rawData) {
         const data = {
             nodes: new vis.DataSet(rawData.nodes),
             edges: new vis.DataSet(rawData.edges)

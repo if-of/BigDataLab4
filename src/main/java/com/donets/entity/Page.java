@@ -1,6 +1,7 @@
 package com.donets.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -10,13 +11,17 @@ import java.util.Set;
 @Getter
 public class Page {
 
+    @Setter
+    private int id = -1;
+    private final String label;
     private final String fullUrl;
     private final String urlWithoutSchemaAndParameters;
     private final Set<Page> childrenPages;
 
-    public Page(String fullUrl, String urlWithoutSchemaAndParameters) {
+    public Page(String fullUrl, String urlWithoutSchemaAndParameters, String label) {
         this.fullUrl = fullUrl;
         this.urlWithoutSchemaAndParameters = urlWithoutSchemaAndParameters;
+        this.label = label;
         this.childrenPages = new HashSet<>();
     }
 

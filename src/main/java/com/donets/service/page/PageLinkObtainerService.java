@@ -22,7 +22,11 @@ public class PageLinkObtainerService {
 
     public Set<Page> obtainPages(String startUrl, int maxPages) {
         String citeRootUrl = UrlUtils.getRootUrl(startUrl);
-        Page startPage = new Page(startUrl, UrlUtils.trimParametersAndTrailingSlash(startUrl));
+        Page startPage = new Page(
+                startUrl,
+                UrlUtils.trimParametersAndTrailingSlash(startUrl),
+                UrlUtils.getFileNameFromUrl(startUrl)
+        );
 
         Set<Page> processedPages = new HashSet<>();
         List<Page> pageForProcessing = new LinkedList<>();
@@ -47,7 +51,11 @@ public class PageLinkObtainerService {
         return childrenRawUrls.stream()
                 .map(url -> UrlUtils.getAbsoluteUrl(page.getFullUrl(), url))
                 .filter(url -> UrlUtils.urlBelongsToRootUrl(url, citeRootUrl))
-                .map(url -> new Page(url, UrlUtils.trimParametersAndTrailingSlash(url)))
+                .map(url -> new Page(
+                        url,
+                        UrlUtils.trimParametersAndTrailingSlash(url),
+                        UrlUtils.getFileNameFromUrl(url)
+                ))
                 .collect(Collectors.toSet());
     }
 

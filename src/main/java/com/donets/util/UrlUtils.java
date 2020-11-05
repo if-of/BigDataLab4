@@ -56,6 +56,13 @@ public class UrlUtils {
         }
     }
 
+    public static String getFileNameFromUrl(String rawUrl) {
+        String fileName = trimParametersAndTrailingSlash(rawUrl);
+        fileName = fileName.substring(fileName.lastIndexOf("/"));
+        fileName = fileName.substring(Math.min(fileName.length(), 1), Math.min(fileName.length(), 7));
+        return fileName;
+    }
+
     public static boolean urlBelongsToRootUrl(String rawUrl, String rootUrl) {
         boolean startWith = rawUrl.startsWith(rootUrl);
         if (startWith) {

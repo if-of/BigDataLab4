@@ -1,5 +1,6 @@
 package com.donets.controller;
 
+import com.donets.dto.GraphData;
 import com.donets.dto.RankAlgorithmInitDataDto;
 import com.donets.entity.Page;
 import com.donets.service.page.PageLinkObtainerService;
@@ -21,15 +22,14 @@ public class MainController {
     private final PageLinkObtainerService pageLinkObtainerService;
 
     @PostMapping("/process")
-    public String greeting(@Valid @RequestBody RankAlgorithmInitDataDto rankAlgorithmInitDataDto) {
+    public GraphData greeting(@Valid @RequestBody RankAlgorithmInitDataDto rankAlgorithmInitDataDto) {
         Set<Page> pages = pageLinkObtainerService.obtainPages(
                 rankAlgorithmInitDataDto.getUrl(),
                 rankAlgorithmInitDataDto.getMaxPages()
         );
 
         GraphUtils.normalizePagesGraph(pages);
-
-
-        return "{nodes:[],edges:[]}";
+        GraphUtils.numberPagesGraph(pages);
+        return GraphUtils.createGraph(pages);
     }
 }
