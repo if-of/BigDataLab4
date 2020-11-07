@@ -8,6 +8,12 @@ $(document).ready(() => {
                     enabled: true
                 }
             }
+        },
+        physics: {
+            enabled: false
+        },
+        interaction:{
+            dragNodes:false,
         }
     }
 
@@ -34,5 +40,7 @@ $(document).ready(() => {
             edges: new vis.DataSet(rawData.edges)
         }
         const network = new vis.Network(container, data, options);
+        network.physics.stabilize(200);
+        alert("finished");
     }
 })

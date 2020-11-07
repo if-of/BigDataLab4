@@ -3,7 +3,6 @@ package com.donets.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -13,22 +12,22 @@ public class Page {
 
     @Setter
     private int id = -1;
-    private final String label;
     private final String fullUrl;
     private final String urlWithoutSchemaAndParameters;
-    private final Set<Page> childrenPages;
+    private final Set<Page> refersTo;
+    private final Set<Page> referredBy;
 
-    public Page(String fullUrl, String urlWithoutSchemaAndParameters, String label) {
+    Page(String fullUrl, String urlWithoutSchemaAndParameters) {
         this.fullUrl = fullUrl;
         this.urlWithoutSchemaAndParameters = urlWithoutSchemaAndParameters;
-        this.label = label;
-        this.childrenPages = new HashSet<>();
+        this.refersTo = new HashSet<>();
+        this.referredBy = new HashSet<>();
     }
 
-    public void linkAllChildrenPages(Collection<Page> childrenPages) {
-        this.childrenPages.addAll(childrenPages);
+    public static void linkPages(Page parentPage, Set<Page> childPages) {
+        parentPage.refersTo.addAll(childPages);
+        childPages.forEach(childPage -> childPage.referredBy.add(parentPage));
     }
-
 
     @Override
     public boolean equals(Object o) {

@@ -1,10 +1,11 @@
 package com.donets.service.page;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -17,12 +18,19 @@ import java.util.stream.Collectors;
 @Service
 public class PageContentLoaderService {
 
-    private final CloseableHttpClient httpClient = HttpClients.createDefault();
+    private final int TIMEOUT_SEC = 3;
+    private final RequestConfig config = RequestConfig.custom()
+            .setConnectTimeout(1000 * TIMEOUT_SEC)
+            .setConnectionRequestTimeout(1000 * TIMEOUT_SEC)
+            .setSocketTimeout(1000 * TIMEOUT_SEC).build();
+    private final CloseableHttpClient httpClient = HttpClientBuilder
+            .create()
+            .setDefaultRequestConfig(config)
+            .build();
 
     public String loadPageContent(String url) {
-        try {
-            HttpGet request = new HttpGet(url);
-            CloseableHttpResponse response = httpClient.execute(request);
+        HttpGet request = new HttpGet(url);
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity httpEntity = response.getEntity();
             InputStream inputStream;
             inputStream = httpEntity.getContent();

@@ -6,7 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class RankAlgorithmInitDataDto {
+public class RankAlgorithmInitData {
 
     @NotBlank
     private String url;
