@@ -18,13 +18,6 @@ public class GraphUtils {
                     UrlUtils.getFileNameFromUrl(page.getFullUrl()),
                     page.getFullUrl()
             ));
-            for (Page innerPages : page.getRefersTo()) {
-                graphNodes.add(new GraphNode(
-                        innerPages.getId(),
-                        UrlUtils.getFileNameFromUrl(innerPages.getFullUrl()),
-                        innerPages.getFullUrl()
-                ));
-            }
         }
 
         Set<GraphEdge> graphEdges = new HashSet<>();

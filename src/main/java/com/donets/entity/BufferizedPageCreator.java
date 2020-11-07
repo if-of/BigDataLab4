@@ -10,11 +10,11 @@ public class BufferizedPageCreator {
     @Getter
     private Map<String, Page> buffer = new HashMap<>();
 
-    public Page createPage(String fullUrl, String urlWithoutSchemaAndParameters) {
-        Page page = buffer.get(fullUrl);
+    public Page createPage(String fullUrl, String urlWithoutParametersAndTrailingSlash) {
+        Page page = buffer.get(urlWithoutParametersAndTrailingSlash);
         if (page == null) {
-            page = new Page(fullUrl, urlWithoutSchemaAndParameters);
-            buffer.put(fullUrl, page);
+            page = new Page(fullUrl, urlWithoutParametersAndTrailingSlash);
+            buffer.put(urlWithoutParametersAndTrailingSlash, page);
         }
         return page;
     }

@@ -10,10 +10,15 @@ $(document).ready(() => {
             }
         },
         physics: {
-            enabled: false
+            enabled: true,
+            stabilization: {
+                enabled: true,
+                iterations: 10000,
+                updateInterval: 100,
+            },
         },
-        interaction:{
-            dragNodes:false,
+        interaction: {
+            dragNodes: false,
         }
     }
 
@@ -27,7 +32,7 @@ $(document).ready(() => {
             contentType: "application/json",
             data: JSON.stringify({
                 url: $("#url")[0].value,
-                maxPages: $("#max_pages")[0].value,
+                maxPages: $("#max_requests")[0].value,
             }),
         })
             .done(_drawGraph)
@@ -40,7 +45,8 @@ $(document).ready(() => {
             edges: new vis.DataSet(rawData.edges)
         }
         const network = new vis.Network(container, data, options);
-        network.physics.stabilize(200);
+        network.physics.hidden = true;
+        setTimeout(() => network.physics.stopSimulation(), 10000)
         alert("finished");
     }
 })

@@ -21,15 +21,14 @@ public class PageLinkObtainerService {
 
     public Set<Page> obtainPages(String startUrl, int maxPages) {
         BufferizedPageCreator pageCreator = new BufferizedPageCreator();
+        Set<Page> processedPages = new HashSet<>();
+        Set<Page> pageForProcessing = new HashSet<>();
 
         String citeRootUrl = UrlUtils.getRootUrl(startUrl);
         Page startPage = pageCreator.createPage(
                 startUrl,
                 UrlUtils.trimParametersAndTrailingSlash(startUrl)
         );
-
-        Set<Page> processedPages = new HashSet<>();
-        Set<Page> pageForProcessing = new HashSet<>();
         pageForProcessing.add(startPage);
 
         while (!pageForProcessing.isEmpty() && processedPages.size() < maxPages) {
@@ -43,7 +42,9 @@ public class PageLinkObtainerService {
             addPageForProcessing(childrenPages, pageForProcessing, processedPages);
         }
 
-        return processedPages;
+        return new HashSet<>(
+                pageCreator.getBuffer().values()
+        );
     }
 
     private Set<Page> obtainChildrenPages(Page page, String citeRootUrl, BufferizedPageCreator creator) {
@@ -60,10 +61,10 @@ public class PageLinkObtainerService {
                 .collect(Collectors.toSet());
     }
 
-    private void addPageForProcessing(Set<Page> rawPage,
+    private void addPageForProcessing(Set<Page> childrenPages,
                                       Set<Page> pageForProcessing,
                                       Set<Page> processedPages) {
-        for (Page page : rawPage) {
+        for (Page page : childrenPages) {
             if (!processedPages.contains(page)) {
                 pageForProcessing.add(page);
             }
