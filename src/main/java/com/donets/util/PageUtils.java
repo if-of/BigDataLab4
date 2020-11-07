@@ -23,6 +23,7 @@ public class PageUtils {
     public static void removeSelfLinks(Set<Page> pages) {
         for (Page page : pages) {
             page.getRefersTo().remove(page);
+            page.getReferredBy().remove(page);
         }
     }
 }

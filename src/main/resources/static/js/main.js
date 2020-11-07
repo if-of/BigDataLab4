@@ -1,6 +1,8 @@
 $(document).ready(() => {
 
     const container = $("#mynetwork")[0];
+    const $pageRanksLabel = $("#pageRanks");
+    const pageRanksLabel = $pageRanksLabel[0];
     const options = {
         edges: {
             arrows: {
@@ -35,18 +37,28 @@ $(document).ready(() => {
                 maxPages: $("#max_requests")[0].value,
             }),
         })
-            .done(_drawGraph)
+            .done(rawData => {
+                _drawGraph(rawData.graphData);
+                _printPageRank(rawData.pageRanks);
+            })
             .fail(message => alert(JSON.stringify(message, null, 2)));
     }
 
-    function _drawGraph(rawData) {
+    function _drawGraph(graphData) {
         const data = {
-            nodes: new vis.DataSet(rawData.nodes),
-            edges: new vis.DataSet(rawData.edges)
+            nodes: new vis.DataSet(graphData.nodes),
+            edges: new vis.DataSet(graphData.edges)
         }
         const network = new vis.Network(container, data, options);
         network.physics.hidden = true;
         setTimeout(() => network.physics.stopSimulation(), 10000)
-        alert("finished");
+    }
+
+    function _printPageRank(pageRanks) {
+        $pageRanksLabel.empty();
+        for (const pageRank of pageRanks) {
+            pageRanksLabel.append(pageRank.url + " => " + pageRank.score);
+            pageRanksLabel.appendChild(document.createElement("br"));
+        }
     }
 })

@@ -1,4 +1,4 @@
-package com.donets.dto;
+package com.donets.dto.graph;
 
 import lombok.Data;
 

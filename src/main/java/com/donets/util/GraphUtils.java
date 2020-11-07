@@ -1,8 +1,8 @@
 package com.donets.util;
 
-import com.donets.dto.GraphData;
-import com.donets.dto.GraphEdge;
-import com.donets.dto.GraphNode;
+import com.donets.dto.graph.GraphData;
+import com.donets.dto.graph.GraphEdge;
+import com.donets.dto.graph.GraphNode;
 import com.donets.entity.Page;
 
 import java.util.HashSet;
@@ -15,8 +15,8 @@ public class GraphUtils {
         for (Page page : pages) {
             graphNodes.add(new GraphNode(
                     page.getId(),
-                    UrlUtils.getFileNameFromUrl(page.getFullUrl()),
-                    page.getFullUrl()
+                    UrlUtils.getFileNameFromUrl(page.getUrlWithoutSchemaAndParameters()),
+                    page.getUrlWithoutSchemaAndParameters()
             ));
         }
 
